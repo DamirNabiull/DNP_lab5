@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-
 // Registry Service
 service RegistryService {
   rpc register(RegisterRequest) returns (RegisterResponse);

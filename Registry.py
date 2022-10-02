@@ -4,6 +4,11 @@ import chord_pb2 as pb2
 import chord_pb2_grpc as pb2_grpc
 from concurrent import futures
 
+registered_nodes: dict
+available_ids: list
+max_size: int
+m: int
+
 
 class RegistrySH(pb2_grpc.RegistryServiceServicer):
     def register(self, request, context):
@@ -28,7 +33,10 @@ class RegistryClientSH(pb2_grpc.RegistryClientServiceServicer):
 
 
 if __name__ == '__main__':
-    port, m = sys.argv[1:]
+    port, m = map(int, sys.argv[1:])
+    registered_nodes = {}
+    available_ids = []
+    max_size = 2 ** m
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     pb2_grpc.add_RegistryServiceServicer_to_server(RegistrySH(), server)

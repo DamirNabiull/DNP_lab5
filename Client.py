@@ -64,6 +64,7 @@ if __name__ == '__main__':
         elif cmd == 'save':
             if connection_type == 2:
                 key, text = args.split(' ', 1)
+                key = key.replace('\"', '')
                 msg = pb2.SaveRequest(key=key, text=text)
                 response = node.save(msg)
                 print(response)

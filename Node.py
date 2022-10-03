@@ -64,7 +64,7 @@ if __name__ == "__main__":
         msg = pb2.RegisterRequest(ipaddr=ip, port=int(port))
         response = stub.register(msg)
 
-        if response.id > 0:
+        if response.id >= 0:
             node_id = response.id
             m = int(response.message)
             print(node_id, m)
@@ -72,10 +72,13 @@ if __name__ == "__main__":
             print(response.message)
             sys.exit(0)
 
+        while True:
+            x = 1
+
     except KeyboardInterrupt:
         # Deregister
-        if node_id > 0:
+        if node_id >= 0:
             msg = pb2.DeregisterRequest(id=node_id)
             response = stub.deregister(msg)
-            print(response)
+            print(f"\n({response.status}, {response.message})")
         sys.exit(0)

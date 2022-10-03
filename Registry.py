@@ -70,7 +70,7 @@ class RegistrySH(pb2_grpc.RegistryServiceServicer):
         p = request.id
         ind = used_ids.index(p)
         used_l = len(used_ids)
-        pred_id = used_ids[ind-1]
+        pred_id = used_ids[ind - 1]
         response = {'id': pred_id, 'address': registered_nodes[pred_id]}
         yield pb2.NodeInfoItem(**response)
 
@@ -85,11 +85,13 @@ class RegistrySH(pb2_grpc.RegistryServiceServicer):
                 val = (p + (2 ** i)) % max_size
                 if is_debug:
                     print('Value:', val)
+
                 while True:
                     if is_debug:
                         print((val <= used_ids[ind]))
-                        print((used_ids[ind] < used_ids[ind-1] < val))
-                    if (val <= used_ids[ind]) or (used_ids[ind] < used_ids[ind-1] < val):
+                        print((used_ids[ind] < used_ids[ind - 1] < val))
+
+                    if (val <= used_ids[ind]) or (used_ids[ind] < used_ids[ind - 1] < val):
                         if used_ids[ind] != prev_node:
                             prev_node = used_ids[ind]
 
@@ -102,6 +104,10 @@ class RegistrySH(pb2_grpc.RegistryServiceServicer):
                         break
                     ind = (ind + 1) % used_l
         else:
+            if is_debug:
+                print('********* Generate FT *********')
+                print(pred_id, registered_nodes[pred_id])
+
             yield pb2.NodeInfoItem(**response)
 
 

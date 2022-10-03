@@ -45,8 +45,10 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
         next_node = lookup(target_id, finger_table.keys())
 
         if next_node == node_id:
-            if chord_data[key] == 0:
-                 reply = {"status": True, "message": ""}
+            if chord_data[key] in chord_data.keys():
+                reply = {"status": False, "message": f"key {key} already exists"}
+            else:
+                reply = {"status": True, "message": f""}
         return pb2.NodeActionResponse(**reply)
 
     def remove(self, request, context):

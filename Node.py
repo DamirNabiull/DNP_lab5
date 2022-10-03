@@ -15,6 +15,8 @@ pred: int
 def lookup(target_id, nodes):
     if pred < target_id <= node_id:
         return node_id
+    elif pred == node_id:
+        return node_id
     else:
         for i in range(len(nodes)):
             if nodes[i] > nodes[i+1]:
@@ -27,7 +29,7 @@ def lookup(target_id, nodes):
 
 def getTargetId(key):
     hash_value = zlib.adler32(key.encode())
-    target_id = hash_value % 2 ** m
+    target_id = hash_value % (2 ** m)
     return target_id
 
 
@@ -37,11 +39,14 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
         return pb2.NodeInfoItem(** reply)
 
     def save(self, request, context):
-        f = True
-        msg1 = ""
+        key = request.key
+        text = request.text
         target_id = getTargetId(request.key)
+        next_node = lookup(target_id, finger_table.keys())
 
-        reply = {"status": f, "message": msg1}
+        if next_node == node_id:
+            if chord_data[key] == 0:
+                 reply = {"status": True, "message": ""}
         return pb2.NodeActionResponse(**reply)
 
     def remove(self, request, context):

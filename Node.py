@@ -35,8 +35,9 @@ def getTargetId(key):
 
 class NodeSH(pb2_grpc.NodeServiceServicer):
     def get_finger_table(self, request, context):
-        reply = {}
-        return pb2.NodeInfoItem(** reply)
+        for key in finger_table.keys():
+            reply = pb2.NodeInfoItem(id=key, address=finger_table[key])
+            yield pb2.NodeInfoItem(** reply)
 
     def save(self, request, context):
         key = request.key
@@ -61,19 +62,45 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
         return pb2.NodeActionResponse(**reply)
 
     def remove(self, request, context):
-        f = True
-        msg2 = ""
+        key = request.key
         target_id = getTargetId(request.key)
+        next_node = lookup(target_id, finger_table.keys())
 
-        reply = {"status": f, "message": msg2}
+        if next_node == node_id:
+            if chord_data[key] in chord_data.keys():
+                chord_data.pop(key)
+                reply = {"status": True, "message": f"Node {next_node} it was removed from"}
+            else:
+                reply = {"status": False, "message": f"key {key} does not exist"}
+        else:
+            # Connect to Node
+            node_channel = grpc.insecure_channel(finger_table[next_node])
+            node_stub = pb2_grpc.NodeServiceStub(node_channel)
+
+            msg_ = pb2.FindRemoveRequest(key=key)
+            reply = node_stub.remove(msg_)
+
         return pb2.NodeActionResponse(**reply)
 
     def find(self, request, context):
-        f = True
-        msg3 = ""
+        key = request.key
         target_id = getTargetId(request.key)
+        next_node = lookup(target_id, finger_table.keys())
 
-        reply = {"status": f, "message": msg3}
+        if next_node == node_id:
+            if chord_data[key] in chord_data.keys():
+                reply = {"status": True,
+                         "message": f"{key} is saved in node {next_node}, Address: {finger_table[next_node]}"}
+            else:
+                reply = {"status": False, "message": f"key {key} does not exist"}
+        else:
+            # Connect to Node
+            node_channel = grpc.insecure_channel(finger_table[next_node])
+            node_stub = pb2_grpc.NodeServiceStub(node_channel)
+
+            msg_ = pb2.FindRemoveRequest(key=key)
+            reply = node_stub.find(msg_)
+
         return pb2.NodeActionResponse(**reply)
 
 
@@ -113,9 +140,7 @@ if __name__ == "__main__":
         for r in responses:
             print(r)
 
-        while True:
-            x = 1
-
+        node_server.wait_for_termination()
     except KeyboardInterrupt:
         # Deregister
         if node_id >= 0:

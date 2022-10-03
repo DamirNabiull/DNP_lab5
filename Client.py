@@ -22,8 +22,9 @@ def create_connection(host: str):
 
     try:
         channel = grpc.insecure_channel(host)
-        print(grpc.channel_ready_future(channel).result(timeout=conn_timeout))
+        # print(grpc.channel_ready_future(channel).result(timeout=conn_timeout))
         registry = pb2_grpc.RegistryClientServiceStub(channel)
+        registry.get_chord_info()
         connection_type = 1
         print('Connected to Registry')
     except Exception as e:
@@ -35,6 +36,7 @@ def create_connection(host: str):
             channel = grpc.insecure_channel(host)
             print(grpc.channel_ready_future(channel).result(timeout=conn_timeout))
             node = pb2_grpc.NodeServiceStub(channel)
+            node.get_finger_table()
             connection_type = 2
             print('Connected to Node')
         except Exception as e:
@@ -64,6 +66,7 @@ if __name__ == '__main__':
         elif cmd == 'save':
             if connection_type == 2:
                 key, text = args.split(' ', 1)
+                key = key.replace('\"', '')
                 msg = pb2.SaveRequest(key=key, text=text)
                 response = node.save(msg)
                 print(response)

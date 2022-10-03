@@ -67,22 +67,32 @@ class RegistrySH(pb2_grpc.RegistryServiceServicer):
 
     def populate_finger_table(self, request, context):
         # Find predecessor
-        ind = used_ids.index(request.id)
+        p = request.id
+        ind = used_ids.index(p)
+        used_l = len(used_ids)
         pred_id = used_ids[ind-1]
         response = {'id': pred_id, 'address': registered_nodes[pred_id]}
         yield pb2.NodeInfoItem(**response)
 
-        # Generate
-        # if len(available_ids) > 0:
-        #     for i in range(m):
-        #         response = {'id': i + 1, 'address': '127.0.0.0:5555'}
-        #         yield pb2.NodeInfoItem(**response)
+        # Generate FT
+        prev_node = p
+        if used_l > 1:
+            for i in range(0, m):
+                val = (p + (2 ** i)) % max_size
+                while True:
+                    ind = (ind + 1) % used_l
+                    if (val < used_ids[ind]) or (used_ids[ind] < used_ids[ind-1] < val):
+                        if used_ids[ind] != prev_node:
+                            prev_node = used_ids[ind]
+                            response = {'id': prev_node, 'address': registered_nodes[prev_node]}
+                            yield pb2.NodeInfoItem(**response)
+                        break
 
 
 class RegistryClientSH(pb2_grpc.RegistryClientServiceServicer):
     def get_chord_info(self, request, context):
-        for i in range(2):
-            response = {'id': i + 1, 'address': '127.0.0.0:5555'}
+        for node_id in registered_nodes:
+            response = {'id': node_id, 'address': registered_nodes[node_id]}
             yield pb2.NodeInfoItem(**response)
 
 

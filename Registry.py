@@ -84,7 +84,6 @@ class RegistrySH(pb2_grpc.RegistryServiceServicer):
             for i in range(0, m):
                 val = (p + (2 ** i)) % max_size
                 while True:
-                    ind = (ind + 1) % used_l
                     if (val < used_ids[ind]) or (used_ids[ind] < used_ids[ind-1] < val):
                         if used_ids[ind] != prev_node:
                             prev_node = used_ids[ind]
@@ -96,6 +95,7 @@ class RegistrySH(pb2_grpc.RegistryServiceServicer):
                             response = {'id': prev_node, 'address': registered_nodes[prev_node]}
                             yield pb2.NodeInfoItem(**response)
                         break
+                    ind = (ind + 1) % used_l
 
 
 class RegistryClientSH(pb2_grpc.RegistryClientServiceServicer):

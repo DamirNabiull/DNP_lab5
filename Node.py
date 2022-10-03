@@ -48,7 +48,16 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
             if chord_data[key] in chord_data.keys():
                 reply = {"status": False, "message": f"key {key} already exists"}
             else:
-                reply = {"status": True, "message": f""}
+                chord_data[key] = text
+                reply = {"status": True, "message": f"{key} is saved in node {next_node}"}
+        else:
+            # Connect to Node
+            node_channel = grpc.insecure_channel(finger_table[next_node])
+            node_stub = pb2_grpc.NodeServiceStub(node_channel)
+
+            msg_ = pb2.SaveRequest(key=key, text=text)
+            reply = node_stub.save(msg_)
+
         return pb2.NodeActionResponse(**reply)
 
     def remove(self, request, context):

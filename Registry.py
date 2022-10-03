@@ -74,6 +74,10 @@ class RegistrySH(pb2_grpc.RegistryServiceServicer):
         response = {'id': pred_id, 'address': registered_nodes[pred_id]}
         yield pb2.NodeInfoItem(**response)
 
+        if is_debug:
+            print('********* Predecessor *********')
+            print(pred_id, registered_nodes[pred_id])
+
         # Generate FT
         prev_node = p
         if used_l > 1:
@@ -84,6 +88,11 @@ class RegistrySH(pb2_grpc.RegistryServiceServicer):
                     if (val < used_ids[ind]) or (used_ids[ind] < used_ids[ind-1] < val):
                         if used_ids[ind] != prev_node:
                             prev_node = used_ids[ind]
+
+                            if is_debug:
+                                print('********* Generate FT *********')
+                                print(prev_node, registered_nodes[prev_node])
+
                             response = {'id': prev_node, 'address': registered_nodes[prev_node]}
                             yield pb2.NodeInfoItem(**response)
                         break
@@ -92,6 +101,10 @@ class RegistrySH(pb2_grpc.RegistryServiceServicer):
 class RegistryClientSH(pb2_grpc.RegistryClientServiceServicer):
     def get_chord_info(self, request, context):
         for node_id in registered_nodes:
+            if is_debug:
+                print('********* Chord Info *********')
+                print(node_id, registered_nodes[node_id])
+
             response = {'id': node_id, 'address': registered_nodes[node_id]}
             yield pb2.NodeInfoItem(**response)
 

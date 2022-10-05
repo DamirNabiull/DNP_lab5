@@ -150,6 +150,11 @@ class RegistryClientServiceStub(object):
                 request_serializer=chord__pb2.Empty.SerializeToString,
                 response_deserializer=chord__pb2.NodeInfoItem.FromString,
                 )
+        self.connect = channel.unary_unary(
+                '/RegistryClientService/connect',
+                request_serializer=chord__pb2.Empty.SerializeToString,
+                response_deserializer=chord__pb2.ConnectResponse.FromString,
+                )
 
 
 class RegistryClientServiceServicer(object):
@@ -162,6 +167,12 @@ class RegistryClientServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def connect(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_RegistryClientServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -169,6 +180,11 @@ def add_RegistryClientServiceServicer_to_server(servicer, server):
                     servicer.get_chord_info,
                     request_deserializer=chord__pb2.Empty.FromString,
                     response_serializer=chord__pb2.NodeInfoItem.SerializeToString,
+            ),
+            'connect': grpc.unary_unary_rpc_method_handler(
+                    servicer.connect,
+                    request_deserializer=chord__pb2.Empty.FromString,
+                    response_serializer=chord__pb2.ConnectResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -195,6 +211,23 @@ class RegistryClientService(object):
         return grpc.experimental.unary_stream(request, target, '/RegistryClientService/get_chord_info',
             chord__pb2.Empty.SerializeToString,
             chord__pb2.NodeInfoItem.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def connect(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/RegistryClientService/connect',
+            chord__pb2.Empty.SerializeToString,
+            chord__pb2.ConnectResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -229,6 +262,16 @@ class NodeServiceStub(object):
                 request_serializer=chord__pb2.FindRemoveRequest.SerializeToString,
                 response_deserializer=chord__pb2.NodeActionResponse.FromString,
                 )
+        self.connect = channel.unary_unary(
+                '/NodeService/connect',
+                request_serializer=chord__pb2.Empty.SerializeToString,
+                response_deserializer=chord__pb2.ConnectResponse.FromString,
+                )
+        self.request_key_value = channel.unary_stream(
+                '/NodeService/request_key_value',
+                request_serializer=chord__pb2.KeyValueRequest.SerializeToString,
+                response_deserializer=chord__pb2.KeyValueResponse.FromString,
+                )
 
 
 class NodeServiceServicer(object):
@@ -259,6 +302,18 @@ class NodeServiceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def connect(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def request_key_value(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_NodeServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -281,6 +336,16 @@ def add_NodeServiceServicer_to_server(servicer, server):
                     servicer.find,
                     request_deserializer=chord__pb2.FindRemoveRequest.FromString,
                     response_serializer=chord__pb2.NodeActionResponse.SerializeToString,
+            ),
+            'connect': grpc.unary_unary_rpc_method_handler(
+                    servicer.connect,
+                    request_deserializer=chord__pb2.Empty.FromString,
+                    response_serializer=chord__pb2.ConnectResponse.SerializeToString,
+            ),
+            'request_key_value': grpc.unary_stream_rpc_method_handler(
+                    servicer.request_key_value,
+                    request_deserializer=chord__pb2.KeyValueRequest.FromString,
+                    response_serializer=chord__pb2.KeyValueResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -358,5 +423,39 @@ class NodeService(object):
         return grpc.experimental.unary_unary(request, target, '/NodeService/find',
             chord__pb2.FindRemoveRequest.SerializeToString,
             chord__pb2.NodeActionResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def connect(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/NodeService/connect',
+            chord__pb2.Empty.SerializeToString,
+            chord__pb2.ConnectResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def request_key_value(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_stream(request, target, '/NodeService/request_key_value',
+            chord__pb2.KeyValueRequest.SerializeToString,
+            chord__pb2.KeyValueResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

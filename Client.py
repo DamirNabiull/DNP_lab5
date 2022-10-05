@@ -5,6 +5,7 @@ import chord_pb2_grpc as pb2_grpc
 
 registry: pb2_grpc.RegistryClientServiceStub
 node: pb2_grpc.NodeServiceStub
+node_id: int
 connection_type = 0  # 0 - No connection, 1 - registry, 2 - node
 conn_timeout = 1
 
@@ -18,17 +19,16 @@ def get_command_with_args(text: str):
 
 
 def create_connection(host: str):
-    global registry, node, connection_type
+    global registry, node, node_id, connection_type
 
     try:
         channel = grpc.insecure_channel(host)
         # print(grpc.channel_ready_future(channel).result(timeout=conn_timeout))
         registry = pb2_grpc.RegistryClientServiceStub(channel)
-        registry.get_chord_info()
+        resp = registry.connect(pb2.Empty())
+        print(f'Connected to {resp.type}')
         connection_type = 1
-        print('Connected to Registry')
     except Exception as e:
-        print(e)
         pass
 
     if connection_type == 0:
@@ -36,11 +36,11 @@ def create_connection(host: str):
             channel = grpc.insecure_channel(host)
             print(grpc.channel_ready_future(channel).result(timeout=conn_timeout))
             node = pb2_grpc.NodeServiceStub(channel)
-            node.get_finger_table()
+            resp = node.connect(pb2.Empty())
             connection_type = 2
-            print('Connected to Node')
+            print(f'Connected to {resp.type}')
+            node_id = int(resp.type.split()[1])
         except Exception as e:
-            print(e)
             print('There is no Registry/Node on this address')
 
 

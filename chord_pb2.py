@@ -14,11 +14,12 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0b\x63hord.proto\"\x07\n\x05\x45mpty\"/\n\x0fRegisterRequest\x12\x0e\n\x06ipaddr\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\x05\"/\n\x10RegisterResponse\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x1f\n\x11\x44\x65registerRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"5\n\x12\x44\x65registerResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"(\n\x1aPopulateFingerTableRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"+\n\x0cNodeInfoItem\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\"(\n\x0bSaveRequest\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t\" \n\x11\x46indRemoveRequest\x12\x0b\n\x03key\x18\x01 \x01(\t\"5\n\x12NodeActionResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2\xc0\x01\n\x0fRegistryService\x12/\n\x08register\x12\x10.RegisterRequest\x1a\x11.RegisterResponse\x12\x35\n\nderegister\x12\x12.DeregisterRequest\x1a\x13.DeregisterResponse\x12\x45\n\x15populate_finger_table\x12\x1b.PopulateFingerTableRequest\x1a\r.NodeInfoItem0\x01\x32\x42\n\x15RegistryClientService\x12)\n\x0eget_chord_info\x12\x06.Empty\x1a\r.NodeInfoItem0\x01\x32\xc9\x01\n\x0bNodeService\x12+\n\x10get_finger_table\x12\x06.Empty\x1a\r.NodeInfoItem0\x01\x12)\n\x04save\x12\x0c.SaveRequest\x1a\x13.NodeActionResponse\x12\x31\n\x06remove\x12\x12.FindRemoveRequest\x1a\x13.NodeActionResponse\x12/\n\x04\x66ind\x12\x12.FindRemoveRequest\x1a\x13.NodeActionResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0b\x63hord.proto\"\x07\n\x05\x45mpty\"\x1f\n\x0f\x43onnectResponse\x12\x0c\n\x04type\x18\x01 \x01(\t\"/\n\x0fRegisterRequest\x12\x0e\n\x06ipaddr\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\x05\"/\n\x10RegisterResponse\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x1f\n\x11\x44\x65registerRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"5\n\x12\x44\x65registerResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"(\n\x1aPopulateFingerTableRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"+\n\x0cNodeInfoItem\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\"(\n\x0bSaveRequest\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t\" \n\x11\x46indRemoveRequest\x12\x0b\n\x03key\x18\x01 \x01(\t\"5\n\x12NodeActionResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2\xc0\x01\n\x0fRegistryService\x12/\n\x08register\x12\x10.RegisterRequest\x1a\x11.RegisterResponse\x12\x35\n\nderegister\x12\x12.DeregisterRequest\x1a\x13.DeregisterResponse\x12\x45\n\x15populate_finger_table\x12\x1b.PopulateFingerTableRequest\x1a\r.NodeInfoItem0\x01\x32g\n\x15RegistryClientService\x12)\n\x0eget_chord_info\x12\x06.Empty\x1a\r.NodeInfoItem0\x01\x12#\n\x07\x63onnect\x12\x06.Empty\x1a\x10.ConnectResponse2\xee\x01\n\x0bNodeService\x12+\n\x10get_finger_table\x12\x06.Empty\x1a\r.NodeInfoItem0\x01\x12)\n\x04save\x12\x0c.SaveRequest\x1a\x13.NodeActionResponse\x12\x31\n\x06remove\x12\x12.FindRemoveRequest\x1a\x13.NodeActionResponse\x12/\n\x04\x66ind\x12\x12.FindRemoveRequest\x1a\x13.NodeActionResponse\x12#\n\x07\x63onnect\x12\x06.Empty\x1a\x10.ConnectResponseb\x06proto3')
 
 
 
 _EMPTY = DESCRIPTOR.message_types_by_name['Empty']
+_CONNECTRESPONSE = DESCRIPTOR.message_types_by_name['ConnectResponse']
 _REGISTERREQUEST = DESCRIPTOR.message_types_by_name['RegisterRequest']
 _REGISTERRESPONSE = DESCRIPTOR.message_types_by_name['RegisterResponse']
 _DEREGISTERREQUEST = DESCRIPTOR.message_types_by_name['DeregisterRequest']
@@ -34,6 +35,13 @@ Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), {
   # @@protoc_insertion_point(class_scope:Empty)
   })
 _sym_db.RegisterMessage(Empty)
+
+ConnectResponse = _reflection.GeneratedProtocolMessageType('ConnectResponse', (_message.Message,), {
+  'DESCRIPTOR' : _CONNECTRESPONSE,
+  '__module__' : 'chord_pb2'
+  # @@protoc_insertion_point(class_scope:ConnectResponse)
+  })
+_sym_db.RegisterMessage(ConnectResponse)
 
 RegisterRequest = _reflection.GeneratedProtocolMessageType('RegisterRequest', (_message.Message,), {
   'DESCRIPTOR' : _REGISTERREQUEST,
@@ -106,28 +114,30 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
   _EMPTY._serialized_start=15
   _EMPTY._serialized_end=22
-  _REGISTERREQUEST._serialized_start=24
-  _REGISTERREQUEST._serialized_end=71
-  _REGISTERRESPONSE._serialized_start=73
-  _REGISTERRESPONSE._serialized_end=120
-  _DEREGISTERREQUEST._serialized_start=122
-  _DEREGISTERREQUEST._serialized_end=153
-  _DEREGISTERRESPONSE._serialized_start=155
-  _DEREGISTERRESPONSE._serialized_end=208
-  _POPULATEFINGERTABLEREQUEST._serialized_start=210
-  _POPULATEFINGERTABLEREQUEST._serialized_end=250
-  _NODEINFOITEM._serialized_start=252
-  _NODEINFOITEM._serialized_end=295
-  _SAVEREQUEST._serialized_start=297
-  _SAVEREQUEST._serialized_end=337
-  _FINDREMOVEREQUEST._serialized_start=339
-  _FINDREMOVEREQUEST._serialized_end=371
-  _NODEACTIONRESPONSE._serialized_start=373
-  _NODEACTIONRESPONSE._serialized_end=426
-  _REGISTRYSERVICE._serialized_start=429
-  _REGISTRYSERVICE._serialized_end=621
-  _REGISTRYCLIENTSERVICE._serialized_start=623
-  _REGISTRYCLIENTSERVICE._serialized_end=689
-  _NODESERVICE._serialized_start=692
-  _NODESERVICE._serialized_end=893
+  _CONNECTRESPONSE._serialized_start=24
+  _CONNECTRESPONSE._serialized_end=55
+  _REGISTERREQUEST._serialized_start=57
+  _REGISTERREQUEST._serialized_end=104
+  _REGISTERRESPONSE._serialized_start=106
+  _REGISTERRESPONSE._serialized_end=153
+  _DEREGISTERREQUEST._serialized_start=155
+  _DEREGISTERREQUEST._serialized_end=186
+  _DEREGISTERRESPONSE._serialized_start=188
+  _DEREGISTERRESPONSE._serialized_end=241
+  _POPULATEFINGERTABLEREQUEST._serialized_start=243
+  _POPULATEFINGERTABLEREQUEST._serialized_end=283
+  _NODEINFOITEM._serialized_start=285
+  _NODEINFOITEM._serialized_end=328
+  _SAVEREQUEST._serialized_start=330
+  _SAVEREQUEST._serialized_end=370
+  _FINDREMOVEREQUEST._serialized_start=372
+  _FINDREMOVEREQUEST._serialized_end=404
+  _NODEACTIONRESPONSE._serialized_start=406
+  _NODEACTIONRESPONSE._serialized_end=459
+  _REGISTRYSERVICE._serialized_start=462
+  _REGISTRYSERVICE._serialized_end=654
+  _REGISTRYCLIENTSERVICE._serialized_start=656
+  _REGISTRYCLIENTSERVICE._serialized_end=759
+  _NODESERVICE._serialized_start=762
+  _NODESERVICE._serialized_end=1000
 # @@protoc_insertion_point(module_scope)

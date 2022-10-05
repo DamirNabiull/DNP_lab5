@@ -10,6 +10,7 @@ service RegistryService {
 // Registry Service for client - implemented to split server from client
 service RegistryClientService {
   rpc get_chord_info(Empty) returns (stream NodeInfoItem);
+  rpc connect(Empty) returns (ConnectResponse);
 }
 
 // Node Service
@@ -18,10 +19,15 @@ service NodeService {
   rpc save(SaveRequest) returns (NodeActionResponse);
   rpc remove(FindRemoveRequest) returns (NodeActionResponse);
   rpc find(FindRemoveRequest) returns (NodeActionResponse);
+  rpc connect(Empty) returns (ConnectResponse);
 }
 
 // Messages that used several times
 message Empty {}
+
+message ConnectResponse {
+  string type = 1;
+}
 
 // Messages for RegistryService
 message RegisterRequest {

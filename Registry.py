@@ -121,6 +121,10 @@ class RegistryClientSH(pb2_grpc.RegistryClientServiceServicer):
             response = {'id': node_id, 'address': registered_nodes[node_id]}
             yield pb2.NodeInfoItem(**response)
 
+    def connect(self, request, context):
+        response = {'type': 'registry'}
+        yield pb2.ConnectResponse(**response)
+
 
 if __name__ == '__main__':
     port, m = map(int, sys.argv[1:])

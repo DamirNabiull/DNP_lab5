@@ -23,7 +23,6 @@ def create_connection(host: str):
 
     try:
         channel = grpc.insecure_channel(host)
-        # print(grpc.channel_ready_future(channel).result(timeout=conn_timeout))
         registry = pb2_grpc.RegistryClientServiceStub(channel)
         resp = registry.connect(pb2.Empty())
         print(f'Connected to {resp.type}')
@@ -34,7 +33,6 @@ def create_connection(host: str):
     if connection_type == 0:
         try:
             channel = grpc.insecure_channel(host)
-            print(grpc.channel_ready_future(channel).result(timeout=conn_timeout))
             node = pb2_grpc.NodeServiceStub(channel)
             resp = node.connect(pb2.Empty())
             connection_type = 2

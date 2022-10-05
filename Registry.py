@@ -123,7 +123,7 @@ class RegistryClientSH(pb2_grpc.RegistryClientServiceServicer):
 
     def connect(self, request, context):
         response = {'type': 'registry'}
-        yield pb2.ConnectResponse(**response)
+        return pb2.ConnectResponse(**response)
 
 
 if __name__ == '__main__':

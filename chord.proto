@@ -20,6 +20,7 @@ service NodeService {
   rpc remove(FindRemoveRequest) returns (NodeActionResponse);
   rpc find(FindRemoveRequest) returns (NodeActionResponse);
   rpc connect(Empty) returns (ConnectResponse);
+  rpc request_key_value(KeyValueRequest) returns (stream KeyValueResponse);
 }
 
 // Messages that used several times
@@ -71,4 +72,13 @@ message FindRemoveRequest {
 message NodeActionResponse {
   bool status = 1;
   string message = 2;
+}
+
+message KeyValueRequest {
+  int64 id = 1;
+}
+
+message KeyValueResponse {
+  string key = 1;
+  string text = 2;
 }

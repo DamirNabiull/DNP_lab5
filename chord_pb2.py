@@ -14,7 +14,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0b\x63hord.proto\"\x07\n\x05\x45mpty\"\x1f\n\x0f\x43onnectResponse\x12\x0c\n\x04type\x18\x01 \x01(\t\"/\n\x0fRegisterRequest\x12\x0e\n\x06ipaddr\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\x05\"/\n\x10RegisterResponse\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x1f\n\x11\x44\x65registerRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"5\n\x12\x44\x65registerResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"(\n\x1aPopulateFingerTableRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"+\n\x0cNodeInfoItem\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\"(\n\x0bSaveRequest\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t\" \n\x11\x46indRemoveRequest\x12\x0b\n\x03key\x18\x01 \x01(\t\"5\n\x12NodeActionResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t2\xc0\x01\n\x0fRegistryService\x12/\n\x08register\x12\x10.RegisterRequest\x1a\x11.RegisterResponse\x12\x35\n\nderegister\x12\x12.DeregisterRequest\x1a\x13.DeregisterResponse\x12\x45\n\x15populate_finger_table\x12\x1b.PopulateFingerTableRequest\x1a\r.NodeInfoItem0\x01\x32g\n\x15RegistryClientService\x12)\n\x0eget_chord_info\x12\x06.Empty\x1a\r.NodeInfoItem0\x01\x12#\n\x07\x63onnect\x12\x06.Empty\x1a\x10.ConnectResponse2\xee\x01\n\x0bNodeService\x12+\n\x10get_finger_table\x12\x06.Empty\x1a\r.NodeInfoItem0\x01\x12)\n\x04save\x12\x0c.SaveRequest\x1a\x13.NodeActionResponse\x12\x31\n\x06remove\x12\x12.FindRemoveRequest\x1a\x13.NodeActionResponse\x12/\n\x04\x66ind\x12\x12.FindRemoveRequest\x1a\x13.NodeActionResponse\x12#\n\x07\x63onnect\x12\x06.Empty\x1a\x10.ConnectResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0b\x63hord.proto\"\x07\n\x05\x45mpty\"\x1f\n\x0f\x43onnectResponse\x12\x0c\n\x04type\x18\x01 \x01(\t\"/\n\x0fRegisterRequest\x12\x0e\n\x06ipaddr\x18\x01 \x01(\t\x12\x0c\n\x04port\x18\x02 \x01(\x05\"/\n\x10RegisterResponse\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x1f\n\x11\x44\x65registerRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"5\n\x12\x44\x65registerResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"(\n\x1aPopulateFingerTableRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"+\n\x0cNodeInfoItem\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0f\n\x07\x61\x64\x64ress\x18\x02 \x01(\t\"(\n\x0bSaveRequest\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t\" \n\x11\x46indRemoveRequest\x12\x0b\n\x03key\x18\x01 \x01(\t\"5\n\x12NodeActionResponse\x12\x0e\n\x06status\x18\x01 \x01(\x08\x12\x0f\n\x07message\x18\x02 \x01(\t\"\x1d\n\x0fKeyValueRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"-\n\x10KeyValueResponse\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\x0c\n\x04text\x18\x02 \x01(\t2\xc0\x01\n\x0fRegistryService\x12/\n\x08register\x12\x10.RegisterRequest\x1a\x11.RegisterResponse\x12\x35\n\nderegister\x12\x12.DeregisterRequest\x1a\x13.DeregisterResponse\x12\x45\n\x15populate_finger_table\x12\x1b.PopulateFingerTableRequest\x1a\r.NodeInfoItem0\x01\x32g\n\x15RegistryClientService\x12)\n\x0eget_chord_info\x12\x06.Empty\x1a\r.NodeInfoItem0\x01\x12#\n\x07\x63onnect\x12\x06.Empty\x1a\x10.ConnectResponse2\xaa\x02\n\x0bNodeService\x12+\n\x10get_finger_table\x12\x06.Empty\x1a\r.NodeInfoItem0\x01\x12)\n\x04save\x12\x0c.SaveRequest\x1a\x13.NodeActionResponse\x12\x31\n\x06remove\x12\x12.FindRemoveRequest\x1a\x13.NodeActionResponse\x12/\n\x04\x66ind\x12\x12.FindRemoveRequest\x1a\x13.NodeActionResponse\x12#\n\x07\x63onnect\x12\x06.Empty\x1a\x10.ConnectResponse\x12:\n\x11request_key_value\x12\x10.KeyValueRequest\x1a\x11.KeyValueResponse0\x01\x62\x06proto3')
 
 
 
@@ -29,6 +29,8 @@ _NODEINFOITEM = DESCRIPTOR.message_types_by_name['NodeInfoItem']
 _SAVEREQUEST = DESCRIPTOR.message_types_by_name['SaveRequest']
 _FINDREMOVEREQUEST = DESCRIPTOR.message_types_by_name['FindRemoveRequest']
 _NODEACTIONRESPONSE = DESCRIPTOR.message_types_by_name['NodeActionResponse']
+_KEYVALUEREQUEST = DESCRIPTOR.message_types_by_name['KeyValueRequest']
+_KEYVALUERESPONSE = DESCRIPTOR.message_types_by_name['KeyValueResponse']
 Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), {
   'DESCRIPTOR' : _EMPTY,
   '__module__' : 'chord_pb2'
@@ -106,6 +108,20 @@ NodeActionResponse = _reflection.GeneratedProtocolMessageType('NodeActionRespons
   })
 _sym_db.RegisterMessage(NodeActionResponse)
 
+KeyValueRequest = _reflection.GeneratedProtocolMessageType('KeyValueRequest', (_message.Message,), {
+  'DESCRIPTOR' : _KEYVALUEREQUEST,
+  '__module__' : 'chord_pb2'
+  # @@protoc_insertion_point(class_scope:KeyValueRequest)
+  })
+_sym_db.RegisterMessage(KeyValueRequest)
+
+KeyValueResponse = _reflection.GeneratedProtocolMessageType('KeyValueResponse', (_message.Message,), {
+  'DESCRIPTOR' : _KEYVALUERESPONSE,
+  '__module__' : 'chord_pb2'
+  # @@protoc_insertion_point(class_scope:KeyValueResponse)
+  })
+_sym_db.RegisterMessage(KeyValueResponse)
+
 _REGISTRYSERVICE = DESCRIPTOR.services_by_name['RegistryService']
 _REGISTRYCLIENTSERVICE = DESCRIPTOR.services_by_name['RegistryClientService']
 _NODESERVICE = DESCRIPTOR.services_by_name['NodeService']
@@ -134,10 +150,14 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _FINDREMOVEREQUEST._serialized_end=404
   _NODEACTIONRESPONSE._serialized_start=406
   _NODEACTIONRESPONSE._serialized_end=459
-  _REGISTRYSERVICE._serialized_start=462
-  _REGISTRYSERVICE._serialized_end=654
-  _REGISTRYCLIENTSERVICE._serialized_start=656
-  _REGISTRYCLIENTSERVICE._serialized_end=759
-  _NODESERVICE._serialized_start=762
-  _NODESERVICE._serialized_end=1000
+  _KEYVALUEREQUEST._serialized_start=461
+  _KEYVALUEREQUEST._serialized_end=490
+  _KEYVALUERESPONSE._serialized_start=492
+  _KEYVALUERESPONSE._serialized_end=537
+  _REGISTRYSERVICE._serialized_start=540
+  _REGISTRYSERVICE._serialized_end=732
+  _REGISTRYCLIENTSERVICE._serialized_start=734
+  _REGISTRYCLIENTSERVICE._serialized_end=837
+  _NODESERVICE._serialized_start=840
+  _NODESERVICE._serialized_end=1138
 # @@protoc_insertion_point(module_scope)

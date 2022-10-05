@@ -9,6 +9,7 @@ import sys
 
 node_is_running = True
 chord_data: dict
+finger_table_ind: list
 finger_table: dict
 node_id: int
 m: int
@@ -38,37 +39,37 @@ def getTargetId(key):
 
 
 def getPopulateFingerTable():
-    global node_is_running
+    global node_is_running, predecessor, successor, finger_table_ind
 
     while node_is_running:
         msg_ = pb2.PopulateFingerTableRequest(id=node_id)
         responses = stub.populate_finger_table(msg_)
-        arr = []
+        finger_table_ind = []
 
         for r in responses:
-            arr.append(r.id)
+            finger_table_ind.append(r.id)
             finger_table[r.id] = r.address
 
-        predecessor[0] = arr[0]
-        predecessor[1] = finger_table[arr[0]]
-        finger_table.pop(arr[0])
-        successor[0] = arr[1]
-        successor[1] = finger_table[arr[1]]
+        predecessor = (finger_table_ind[0], finger_table[finger_table_ind[0]])
+        successor = (finger_table_ind[1], finger_table[finger_table_ind[1]])
+        if finger_table_ind[0] != finger_table_ind[1]:
+            finger_table.pop(finger_table_ind[0])
+        del finger_table_ind[0]
 
         sleep(1)
 
 
 class NodeSH(pb2_grpc.NodeServiceServicer):
     def get_finger_table(self, request, context):
-        for key in finger_table.keys():
-            reply = pb2.NodeInfoItem(id=key, address=finger_table[key])
+        for key in finger_table_ind:
+            reply = {"id": key, "address": finger_table[key]}
             yield pb2.NodeInfoItem(** reply)
 
     def save(self, request, context):
         key = request.key
         text = request.text
         target_id = getTargetId(request.key)
-        next_node = lookup(target_id, finger_table.keys())
+        next_node = lookup(target_id, finger_table_ind)
 
         if next_node == node_id:
             if chord_data[key] in chord_data.keys():
@@ -89,7 +90,7 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
     def remove(self, request, context):
         key = request.key
         target_id = getTargetId(request.key)
-        next_node = lookup(target_id, finger_table.keys())
+        next_node = lookup(target_id, finger_table_ind)
 
         if next_node == node_id:
             if chord_data[key] in chord_data.keys():
@@ -110,7 +111,7 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
     def find(self, request, context):
         key = request.key
         target_id = getTargetId(request.key)
-        next_node = lookup(target_id, finger_table.keys())
+        next_node = lookup(target_id, finger_table_ind)
 
         if next_node == node_id:
             if chord_data[key] in chord_data.keys():
@@ -128,12 +129,19 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
 
         return pb2.NodeActionResponse(**reply)
 
+    def connect(self, request, context):
+        reply = {'type': f'node {node_id}'}
+        return pb2.ConnectResponse(**reply)
+
 
 if __name__ == "__main__":
     chord_data = {}
-    finger_table = []
+    finger_table = {}
     node_id = -1
     m = 0
+    predecessor = ()
+    successor = ()
+
     t1 = threading.Thread(target=getPopulateFingerTable)
 
     # Start NodeServer
@@ -156,7 +164,6 @@ if __name__ == "__main__":
         if response.id >= 0:
             node_id = response.id
             m = int(response.message)
-            print(node_id, m)
         else:
             print(response.message)
             sys.exit(0)

@@ -1,21 +1,25 @@
 from concurrent import futures
+from time import sleep
 import chord_pb2_grpc as pb2_grpc
 import chord_pb2 as pb2
+import threading
 import grpc
 import zlib
 import sys
 
+node_is_running = True
 chord_data: dict
 finger_table: dict
 node_id: int
 m: int
-pred: int
+predecessor: (int, str)
+successor: (int, str)
 
 
 def lookup(target_id, nodes):
-    if pred < target_id <= node_id:
+    if predecessor[0] < target_id <= node_id:
         return node_id
-    elif pred == node_id:
+    elif predecessor[0] == node_id:
         return node_id
     else:
         for i in range(len(nodes)):
@@ -31,6 +35,27 @@ def getTargetId(key):
     hash_value = zlib.adler32(key.encode())
     target_id = hash_value % (2 ** m)
     return target_id
+
+
+def getPopulateFingerTable():
+    global node_is_running
+
+    while node_is_running:
+        msg_ = pb2.PopulateFingerTableRequest(id=node_id)
+        responses = stub.populate_finger_table(msg_)
+        arr = []
+
+        for r in responses:
+            arr.append(r.id)
+            finger_table[r.id] = r.address
+
+        predecessor[0] = arr[0]
+        predecessor[1] = finger_table[arr[0]]
+        finger_table.pop(arr[0])
+        successor[0] = arr[1]
+        successor[1] = finger_table[arr[1]]
+
+        sleep(1)
 
 
 class NodeSH(pb2_grpc.NodeServiceServicer):
@@ -109,6 +134,7 @@ if __name__ == "__main__":
     finger_table = []
     node_id = -1
     m = 0
+    t1 = threading.Thread(target=getPopulateFingerTable)
 
     # Start NodeServer
     ip, port = sys.argv[2].split(":")
@@ -135,13 +161,14 @@ if __name__ == "__main__":
             print(response.message)
             sys.exit(0)
 
-        msg = pb2.PopulateFingerTableRequest(id=node_id)
-        responses = stub.populate_finger_table(msg)
-        for r in responses:
-            print(r)
+        t1.start()
 
         node_server.wait_for_termination()
     except KeyboardInterrupt:
+        # Stop getting finger table
+        node_is_running = False
+        t1.join()
+
         # Deregister
         if node_id >= 0:
             msg = pb2.DeregisterRequest(id=node_id)

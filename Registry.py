@@ -123,7 +123,7 @@ class RegistryClientSH(pb2_grpc.RegistryClientServiceServicer):
 
     def connect(self, request, context):
         response = {'type': 'registry'}
-        yield pb2.ConnectResponse(**response)
+        return pb2.ConnectResponse(**response)
 
 
 if __name__ == '__main__':
@@ -132,7 +132,7 @@ if __name__ == '__main__':
     max_size = 2 ** m
     available_ids = [i for i in range(max_size)]
     used_ids = []
-    is_debug = True
+    is_debug = False
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     pb2_grpc.add_RegistryServiceServicer_to_server(RegistrySH(), server)

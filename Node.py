@@ -60,7 +60,7 @@ def getPopulateFingerTable():
 
             predecessor = (table_ind[0], finger_table[table_ind[0]])
             successor = (table_ind[1], finger_table[table_ind[1]])
-            if table_ind[0] != table_ind[1]:
+            if table_ind[0] != table_ind[1] and table_ind.count(table_ind[0]) == 1:
                 finger_table.pop(table_ind[0])
             del table_ind[0]
 
@@ -73,7 +73,6 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
     def get_finger_table(self, request, context):
         global populate_block
         populate_block = True
-
         for key in finger_table_ind:
             reply = {"id": key, "address": finger_table[key]}
             yield pb2.NodeInfoItem(** reply)
@@ -164,6 +163,7 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
         for k in chord_data.keys():
             if getTargetId(k) <= id_pred:
                 reply = {"key": k, "text": chord_data[k]}
+                chord_data.pop(k)
                 yield pb2.KeyValueResponse(** reply)
 
 

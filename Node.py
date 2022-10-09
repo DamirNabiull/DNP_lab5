@@ -68,15 +68,15 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
     def save(self, request, context):
         key = request.key
         text = request.text
-        target_id = getTargetId(request.key)
+        target_id = getTargetId(key)
         next_node = lookup(target_id, finger_table_ind)
-
+        print(target_id, next_node)
         if next_node == node_id:
             if chord_data[key] in chord_data.keys():
                 reply = {"status": False, "message": f"key {key} already exists"}
             else:
                 chord_data[key] = text
-                reply = {"status": True, "message": f"{key} is saved in node {next_node}"}
+                reply = {"status": True, "message": f"{key} {next_node}"}
         else:
             # Connect to Node
             node_channel = grpc.insecure_channel(finger_table[next_node])
@@ -95,9 +95,9 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
         if next_node == node_id:
             if chord_data[key] in chord_data.keys():
                 chord_data.pop(key)
-                reply = {"status": True, "message": f"Node {next_node} it was removed from"}
+                reply = {"status": True, "message": f"{next_node}"}
             else:
-                reply = {"status": False, "message": f"key {key} does not exist"}
+                reply = {"status": False, "message": f"{key} doesn't exist"}
         else:
             # Connect to Node
             node_channel = grpc.insecure_channel(finger_table[next_node])
@@ -116,9 +116,9 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
         if next_node == node_id:
             if chord_data[key] in chord_data.keys():
                 reply = {"status": True,
-                         "message": f"{key} is saved in node {next_node}, Address: {finger_table[next_node]}"}
+                         "message": f"{key} {next_node} {finger_table[next_node]}"}
             else:
-                reply = {"status": False, "message": f"key {key} does not exist"}
+                reply = {"status": False, "message": f"{key} doesn't exist"}
         else:
             # Connect to Node
             node_channel = grpc.insecure_channel(finger_table[next_node])

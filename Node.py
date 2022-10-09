@@ -20,16 +20,23 @@ successor: (int, str)
 def lookup(target_id, nodes):
     if predecessor[0] < target_id <= node_id:
         return node_id
+    elif predecessor[0] > node_id and (predecessor[0] < target_id or target_id <= node_id):
+        return node_id
     elif predecessor[0] == node_id:
         return node_id
+    elif node_id < target_id <= nodes[0]:
+        return nodes[0]
+    elif node_id > nodes[0] and (node_id < target_id or target_id <= nodes[0]):
+        return nodes[0]
     else:
-        for i in range(len(nodes)):
-            if nodes[i] > nodes[i+1]:
-                if nodes[i] <= target_id or target_id < nodes[i+1]:
+        for i in range(1, len(nodes)):
+            if nodes[i - 1] > nodes[i]:
+                if nodes[i - 1] < target_id or target_id <= nodes[i]:
                     return nodes[i]
-            else:
-                if nodes[i] <= target_id < nodes[i+1]:
-                    return nodes[i]
+            elif nodes[i - 1] < target_id < nodes[i]:
+                return nodes[i]
+        return nodes[-1]
+
 
 
 def getTargetId(key):
@@ -70,7 +77,7 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
         text = request.text
         target_id = getTargetId(key)
         next_node = lookup(target_id, finger_table_ind)
-
+        print(target_id, next_node)
         if next_node == node_id:
             if key in chord_data.keys():
                 reply = {"status": False, "message": f"key {key} already exists"}
@@ -84,7 +91,9 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
 
             msg_ = pb2.SaveRequest(key=key, text=text)
             reply = node_stub.save(msg_)
+            reply = {"status": reply.status, "message": reply.message}
 
+        print(reply)
         return pb2.NodeActionResponse(**reply)
 
     def remove(self, request, context):
@@ -133,6 +142,13 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
         reply = {'type': f'node {node_id}'}
         return pb2.ConnectResponse(**reply)
 
+    def request_key_value(self, request, context):
+        id_pred = request.id
+        for k in chord_data.keys():
+            if getTargetId(k) <= id_pred:
+                reply = {"key": k, "text": chord_data[k]}
+                yield pb2.KeyValueResponse(** reply)
+
 
 if __name__ == "__main__":
     chord_data = {}
@@ -169,6 +185,16 @@ if __name__ == "__main__":
             sys.exit(0)
 
         t1.start()
+
+        sleep(1)
+        if successor[0] != node_id:
+            node_channel1 = grpc.insecure_channel(successor[1])
+            node_stub1 = pb2_grpc.NodeServiceStub(node_channel1)
+
+            msg1_ = pb2.KeyValueRequest(id=node_id)
+            responses = node_stub1.request_key_value(msg1_)
+            for r in responses:
+                chord_data[r.key] = r.text
 
         node_server.wait_for_termination()
     except KeyboardInterrupt:

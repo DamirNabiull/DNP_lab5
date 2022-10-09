@@ -60,11 +60,7 @@ if __name__ == '__main__':
                 responses = node.get_finger_table(pb2.Empty())
                 print('Node id:', node_id)
                 print('Finger table:')
-                is_pred = True
                 for response in responses:
-                    if is_pred:
-                        is_pred = False
-                        continue
                     print(f'{response.id}:\t{response.address}')
             else:
                 print('Nothing is connected')

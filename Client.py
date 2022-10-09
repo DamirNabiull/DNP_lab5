@@ -43,6 +43,7 @@ def create_connection(host: str):
 
 
 if __name__ == '__main__':
+    node_id = -1
     while True:
         line = input('> ')
         cmd, args = get_command_with_args(line)
@@ -54,11 +55,17 @@ if __name__ == '__main__':
             if connection_type == 1:
                 responses = registry.get_chord_info(pb2.Empty())
                 for response in responses:
-                    print(response)
+                    print(f'{response.id}:\t{response.address}')
             elif connection_type == 2:
                 responses = node.get_finger_table(pb2.Empty())
+                print('Node id:', node_id)
+                print('Finger table:')
+                is_pred = True
                 for response in responses:
-                    print(response)
+                    if is_pred:
+                        is_pred = False
+                        continue
+                    print(f'{response.id}:\t{response.address}')
             else:
                 print('Nothing is connected')
         elif cmd == 'save':
@@ -67,25 +74,34 @@ if __name__ == '__main__':
                 key = key.replace('\"', '')
                 msg = pb2.SaveRequest(key=key, text=text)
                 response = node.save(msg)
-                print(response)
+                if response.status:
+                    print('Saved on', response.message)
+                else:
+                    print(response.message)
             else:
                 print('Node is not connected')
         elif cmd == 'remove':
             if connection_type == 2:
                 msg = pb2.FindRemoveRequest(key=args)
                 response = node.remove(msg)
-                print(response)
+                if response.status:
+                    print('Key removed')
+                else:
+                    print(response.message)
             else:
                 print('Node is not connected')
         elif cmd == 'find':
             if connection_type == 2:
                 msg = pb2.FindRemoveRequest(key=args)
                 response = node.find(msg)
-                print(response)
+                if response.status:
+                    print('Key is located on', response.message)
+                else:
+                    print('Key is located on -1')
             else:
                 print('Node is not connected')
         elif cmd == 'quit':
-            print('Shutting down')
+            print('Terminating')
             break
         else:
             print('Unacceptable command')

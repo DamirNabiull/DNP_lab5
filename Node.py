@@ -70,9 +70,9 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
         text = request.text
         target_id = getTargetId(key)
         next_node = lookup(target_id, finger_table_ind)
-        print(target_id, next_node)
+
         if next_node == node_id:
-            if chord_data[key] in chord_data.keys():
+            if key in chord_data.keys():
                 reply = {"status": False, "message": f"key {key} already exists"}
             else:
                 chord_data[key] = text
@@ -93,7 +93,7 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
         next_node = lookup(target_id, finger_table_ind)
 
         if next_node == node_id:
-            if chord_data[key] in chord_data.keys():
+            if key in chord_data.keys():
                 chord_data.pop(key)
                 reply = {"status": True, "message": f"{next_node}"}
             else:
@@ -114,9 +114,9 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
         next_node = lookup(target_id, finger_table_ind)
 
         if next_node == node_id:
-            if chord_data[key] in chord_data.keys():
+            if key in chord_data.keys():
                 reply = {"status": True,
-                         "message": f"{key} {next_node} {finger_table[next_node]}"}
+                         "message": f"{next_node} {finger_table[next_node]}"}
             else:
                 reply = {"status": False, "message": f"{key} doesn't exist"}
         else:

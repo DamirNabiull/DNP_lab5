@@ -160,11 +160,15 @@ class NodeSH(pb2_grpc.NodeServiceServicer):
 
     def request_key_value(self, request, context):
         id_pred = request.id
+        arr = []
         for k in chord_data.keys():
             if getTargetId(k) <= id_pred:
                 reply = {"key": k, "text": chord_data[k]}
-                chord_data.pop(k)
+                arr.append(k)
                 yield pb2.KeyValueResponse(** reply)
+
+        for k in arr:
+            chord_data.pop(k)
 
 
 if __name__ == "__main__":

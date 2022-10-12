@@ -30,12 +30,13 @@ def lookup(target_id, nodes):
     elif node_id > nodes[0] and (node_id < target_id or target_id <= nodes[0]):
         return nodes[0]
     else:
-        for i in range(1, len(nodes)):
-            if nodes[i - 1] > nodes[i]:
-                if nodes[i - 1] < target_id or target_id <= nodes[i]:
+        for i in range(len(nodes) - 1):
+            if nodes[i] > nodes[i + 1]:
+                if nodes[i] <= target_id or target_id < nodes[i + 1]:
                     return nodes[i]
-            elif nodes[i - 1] < target_id < nodes[i]:
-                return nodes[i]
+            else:
+                if nodes[i] <= target_id < nodes[i + 1]:
+                    return nodes[i]
         return nodes[-1]
 
 

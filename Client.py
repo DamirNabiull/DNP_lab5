@@ -66,14 +66,14 @@ if __name__ == '__main__':
                 print('Nothing is connected')
         elif cmd == 'save':
             if connection_type == 2:
-                key, text = args.split(' ', 1)
-                key = key.replace('\"', '')
+                key, text = args.split('\" ', 1)
+                key = key[1:]
                 msg = pb2.SaveRequest(key=key, text=text)
                 response = node.save(msg)
                 if response.status:
-                    print('Saved on', response.message)
+                    print(f'{response.status}, {key} is saved in node {response.message.split()[1]}')
                 else:
-                    print(response.message)
+                    print(f'{response.status}, {response.message}')
             else:
                 print('Node is not connected')
         elif cmd == 'remove':
@@ -81,9 +81,9 @@ if __name__ == '__main__':
                 msg = pb2.FindRemoveRequest(key=args)
                 response = node.remove(msg)
                 if response.status:
-                    print('Key removed')
+                    print(f'{response.status}, {args} is removed from node {response.message}')
                 else:
-                    print(response.message)
+                    print(f'{response.status}, {response.message}')
             else:
                 print('Node is not connected')
         elif cmd == 'find':
@@ -91,9 +91,9 @@ if __name__ == '__main__':
                 msg = pb2.FindRemoveRequest(key=args)
                 response = node.find(msg)
                 if response.status:
-                    print('Key is located on', response.message)
+                    print(f'{response.status}, {args} is saved in node {response.message}')
                 else:
-                    print('Key is located on -1')
+                    print(f'{response.status}, {response.message}')
             else:
                 print('Node is not connected')
         elif cmd == 'quit':

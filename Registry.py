@@ -3,13 +3,14 @@ import grpc
 import chord_pb2 as pb2
 import chord_pb2_grpc as pb2_grpc
 from concurrent import futures
-from random import randrange as rand
+import random
 
 registered_nodes: dict
 available_ids: list
 used_ids: list
 max_size: int
 m: int
+random.seed(0)
 
 
 class RegistrySH(pb2_grpc.RegistryServiceServicer):
@@ -26,7 +27,12 @@ class RegistrySH(pb2_grpc.RegistryServiceServicer):
             print('\t', response['message'], end='\n\n')
             return pb2.RegisterResponse(**response)
 
-        node_id = available_ids.pop(rand(len_ids))
+        new_id = random.randint(0, max_size - 1)
+        while new_id in used_ids:
+            new_id = random.randint(0, max_size - 1)
+
+        avail_ind = available_ids.index(new_id)
+        node_id = available_ids.pop(avail_ind)
         registered_nodes[node_id] = node_addr
         used_ids.append(node_id)
         used_ids.sort()

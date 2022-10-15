@@ -107,7 +107,8 @@ class RegistryClientSH(pb2_grpc.RegistryClientServiceServicer):
 
 
 if __name__ == '__main__':
-    port, m = map(int, sys.argv[1:])
+    addr, m = sys.argv[1:]
+    m = int(m)
     registered_nodes = {}
     max_size = 2 ** m
     available_ids = [i for i in range(max_size)]
@@ -117,7 +118,7 @@ if __name__ == '__main__':
     pb2_grpc.add_RegistryServiceServicer_to_server(RegistrySH(), server)
     pb2_grpc.add_RegistryClientServiceServicer_to_server(RegistryClientSH(), server)
 
-    server.add_insecure_port(f'127.0.0.1:{port}')
+    server.add_insecure_port(addr)
     server.start()
 
     try:
